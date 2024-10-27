@@ -2,10 +2,9 @@ package com.example.pokecards.ui.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.features.GetAllCharactersUseCase
-import com.example.domain.features.GetFavouriteCharactersUseCase
-import com.example.domain.features.SetFavouriteCharacterUseCase
-import com.example.domain.model.CharacterItem
+import com.example.domain.features.GetAllPokemonUseCase
+import com.example.domain.features.GetCollectedPokemonUseCase
+import com.example.domain.model.PokemonItem
 import com.example.pokecards.ui.compose.CharacterEvent
 import com.example.pokecards.ui.compose.CharacterListState
 import com.example.pokecards.ui.compose.ListType
@@ -13,24 +12,22 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getAllCharactersUseCase: GetAllCharactersUseCase,
-    private val setFavouriteCharacterUseCase: SetFavouriteCharacterUseCase,
-    private val getFavouriteCharactersUseCase: GetFavouriteCharactersUseCase
+    private val getAllPokemonUseCase: GetAllPokemonUseCase,
+    private val getCollectedPokemonUseCase: GetCollectedPokemonUseCase
 ) : ViewModel() {
 
-    private val _characterList = MutableStateFlow<List<CharacterItem>>(emptyList())
+    private val _pokemonList = MutableStateFlow<List<PokemonItem>>(emptyList())
 
-    private val _favouriteList = MutableStateFlow<List<CharacterItem>>(emptyList())
+    private val _collectedPokemonList = MutableStateFlow<List<PokemonItem>>(emptyList())
 
     private val listType = MutableStateFlow(ListType.AllCharacterList)
 
-    private val _state = MutableStateFlow(CharacterListState(_characterList.value, listType.value))
+    private val _state = MutableStateFlow(CharacterListState(listType.value))
     val state = _state.asStateFlow()
 
     init {
@@ -41,22 +38,22 @@ class MainViewModel @Inject constructor(
 
     private fun observeCharacterList() {
         viewModelScope.launch {
-            getAllCharactersUseCase.execute().collectLatest {
-                _characterList.emit(it)
+            getAllPokemonUseCase.execute().collectLatest {
+                _pokemonList.emit(it)
             }
         }
     }
 
     private fun observeFavouriteList() {
         viewModelScope.launch {
-            getFavouriteCharactersUseCase.execute().collectLatest {
-                _favouriteList.emit(it)
+            getCollectedPokemonUseCase.execute().collectLatest {
+                _pokemonList.emit(it)
             }
         }
     }
 
     private fun observeListType() {
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             combine(
                 listType,
                 _characterList,
@@ -73,15 +70,16 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
-        }
+        }*/
     }
 
 
     fun onEvent(event: CharacterEvent) {
         when (event) {
             is CharacterEvent.OnFavCharacterClicked -> {
-                setFavouriteCharacterUseCase.execute(event.character, event.isFavourite)
+                //setFavouriteCharacterUseCase.execute(event.character, event.isFavourite)
             }
+
             CharacterEvent.OnAllListClicked -> listType.value = ListType.AllCharacterList
             CharacterEvent.OnFavListClicked -> listType.value = ListType.FavouriteList
         }

@@ -26,7 +26,7 @@ class RemoteModule {
     }
 
     companion object {
-        const val POKE_URL = "https://pokeapi.co/api/v2"
+        const val POKE_URL = "https://pokeapi.co/api/v2/"
     }
 
 }

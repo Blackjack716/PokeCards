@@ -1,7 +1,7 @@
 package com.example.data.di
 
-import com.example.data.remote.CharacterListRepositoryImpl
-import com.example.domain.repository.CharacterListRepository
+import com.example.data.remote.PokemonRepositoryImpl
+import com.example.domain.repository.PokemonRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,5 +14,5 @@ internal abstract class RepositoryBindingModule {
 
     @Binds
     @Singleton
-    abstract fun bindCharacterListRepository(impl: CharacterListRepositoryImpl): CharacterListRepository
+    abstract fun bindCharacterListRepository(impl: PokemonRepositoryImpl): PokemonRepository
 }

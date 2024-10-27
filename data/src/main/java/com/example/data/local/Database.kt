@@ -2,15 +2,14 @@ package com.example.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.data.local.dao.CharacterDao
-import com.example.data.local.model.CharacterEntity
+import androidx.room.TypeConverters
+import com.example.data.local.dao.PokemonDao
+import com.example.data.local.model.PokemonEntity
 
-@Database(
-    entities = [CharacterEntity::class],
-    version = 1,
-)
+@Database(entities = [PokemonEntity::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun CharacterDao() : CharacterDao
+    abstract fun PokemonDao(): PokemonDao
 
     companion object {
         const val DATABASE_NAME = "PokeCards-database"

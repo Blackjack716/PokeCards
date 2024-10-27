@@ -24,6 +24,6 @@ fun MainView(
         )
     ) {
         CategoryBar(onEvent)
-        CharacterList(state.characters, onEvent)
+        //CharacterList(state., onEvent)
     }
 }

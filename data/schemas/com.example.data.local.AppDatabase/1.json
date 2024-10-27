@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c28f67ec1307dfb5558c2fc057d2097c",
+    "identityHash": "e03b0b36e9688daf817137887b0f119e",
     "entities": [
       {
-        "tableName": "CharacterEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `status` TEXT, `photo_url` TEXT, `isFav` INTEGER, PRIMARY KEY(`id`))",
+        "tableName": "PokemonEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `sprite` TEXT, `types` TEXT NOT NULL, `isInCollection` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,20 +21,20 @@
             "notNull": false
           },
           {
-            "fieldPath": "status",
-            "columnName": "status",
+            "fieldPath": "sprite",
+            "columnName": "sprite",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "photoUrl",
-            "columnName": "photo_url",
+            "fieldPath": "typeList",
+            "columnName": "types",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
-            "fieldPath": "isFavourite",
-            "columnName": "isFav",
+            "fieldPath": "isInCollection",
+            "columnName": "isInCollection",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -52,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c28f67ec1307dfb5558c2fc057d2097c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e03b0b36e9688daf817137887b0f119e')"
     ]
   }
 }

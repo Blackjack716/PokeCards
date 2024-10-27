@@ -14,14 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
-import com.example.domain.model.CharacterItem
+import com.example.domain.model.PokemonItem
 import com.example.pokecards.R
 import com.example.pokecards.ui.theme.LocalPallet
 
 
 @Composable
 fun CharacterList(
-    characterList: List<CharacterItem>,
+    //characterList: List<CharacterItem>,
     onEvent: (CharacterEvent) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -63,14 +60,7 @@ fun CharacterList(
             contentPadding = PaddingValues(vertical = 12.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            itemsIndexed(characterList) { id, character ->
-                if (id != 0) {
-                   HorizontalDivider(
-                       color = LocalPallet.current.backgroundColor,
-                       thickness = 2.dp)
-                }
-                CharacterDisplayableItem(character, onEvent)
-            }
+
         }
 
     }
@@ -79,20 +69,13 @@ fun CharacterList(
 
 @Composable
 private fun CharacterDisplayableItem(
-    characterItem: CharacterItem,
+    pokemonItem
+    : PokemonItem,
     onEvent: (CharacterEvent) -> Unit
 ) {
 
     var isLoading by remember {
         mutableStateOf(true)
-    }
-
-    var isFavourite by remember {
-        mutableStateOf(characterItem.isFavourite)
-    }
-
-    LaunchedEffect(isFavourite) {
-        characterItem.isFavourite = isFavourite
     }
 
     Row(
@@ -109,7 +92,7 @@ private fun CharacterDisplayableItem(
                 .align(Alignment.CenterVertically)
         ) {
             AsyncImage(
-                model = characterItem.image,
+                model = pokemonItem.sprite,
                 contentDescription = "avatar",
                 modifier = Modifier
                     .fillMaxSize()
@@ -142,7 +125,7 @@ private fun CharacterDisplayableItem(
                 .weight(1f)
         ) {
             Text(
-                text = characterItem.name,
+                text = pokemonItem.name,
                 modifier = Modifier
                     .padding(start = 4.dp, top = 4.dp)
                     .align(Alignment.Start),
@@ -157,7 +140,7 @@ private fun CharacterDisplayableItem(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = characterItem.status,
+                text = pokemonItem.name,
                 modifier = Modifier
                     .padding(start = 4.dp, top = 4.dp)
                     .align(Alignment.Start),
@@ -183,11 +166,11 @@ private fun CharacterDisplayableItem(
                     .align(Alignment.End)
                     .size(26.dp)
                     .clickable {
-                        onEvent(CharacterEvent.OnFavCharacterClicked(character = characterItem, !isFavourite))
-                        isFavourite = !isFavourite
+                        onEvent(CharacterEvent.OnFavCharacterClicked(character = pokemonItem, false))
+                        //isFavourite = !isFavourite
                     }
             ) {
-                if (isFavourite) {
+                if (true) {
                     FavouriteIcon(R.drawable.favourite_star_icon)
                 } else {
                     FavouriteIcon(R.drawable.unfavourite_star_icon)
